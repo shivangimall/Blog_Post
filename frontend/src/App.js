@@ -6,6 +6,8 @@ import SignUp from './pages/SignUp';
 import Header from './components/Header';
 import OnlyAdminPrivateRoute from './components/OnlyAdminPrivateRoute';
 import DashBoard from "./pages/Dashboard";
+import PostPage from './pages/PostPage';
+import CreatePost from './pages/CreatePost';
 
 function App() {
   return (
@@ -18,8 +20,11 @@ function App() {
         <Route path='/sign-up' element={<SignUp />} />
         <Route element={<OnlyAdminPrivateRoute />}>
           <Route path='/dashboard' element={<DashBoard />} />
+          <Route path='/create-post' element={<CreatePost />} />
         </Route>
+        <Route path='/post/:id' element={<PostPage />} />
       </Routes>
+
     
     </BrowserRouter>
   );

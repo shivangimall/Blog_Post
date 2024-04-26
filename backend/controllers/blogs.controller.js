@@ -18,6 +18,37 @@ module.exports.getAll = async(req,res)=>{
         })
     }
 }
+module.exports.getBlogById = async (req, res) => {
+    try {
+        const {id} = req.params
+        const blogId = parseInt(id);// Assuming the ID is passed in the URL parameter
+
+        // Assuming 'client' is your database client (e.g., Prisma)
+        let blog = await client.blogs.findOne({
+            where: {
+                id: blogId
+            }
+        });
+
+        if (!blog) {
+            return res.status(404).json({
+                status: "failed",
+                message: "Blog not found"
+            });
+        }
+
+        res.status(200).json({
+            status: "success",
+            data: blog
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({
+            status: "failed",
+            message: "Unable to fetch blog details"
+        });
+    }
+};
 
 module.exports.create = async(req, res)=>{
     try{

@@ -18,12 +18,12 @@ const SignIn = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.email || !formData.password) {
+    if (!formData.username || !formData.password) {
       return dispatch(signInFailure('Please fill all the fields'));
     }
     try {
       dispatch(signInStart());
-      const res = await fetch('/api/auth/signin', {
+      const res = await fetch('/v1/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -47,12 +47,12 @@ const SignIn = () => {
   
         <div className='flex-1 max-w-lg mx-auto'>
           <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
-            <div>
-              <Label value='Your email' />
+          <div>
+              <Label value='Your username' />
               <TextInput
-                type='email'
-                placeholder='name@company.com'
-                id='email'
+                type='text'
+                placeholder='Username'
+                id='username'
                 onChange={handleChange}
               />
             </div>

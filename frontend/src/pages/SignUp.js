@@ -14,18 +14,19 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.username || !formData.email || !formData.password) {
+    if (!formData.username  || !formData.password) {
       return setErrorMessage('Please fill out all fields.');
     }
     try {
       setLoading(true);
       setErrorMessage(null);
-      const res = await fetch('/v1/register', {
+      const res = await fetch('/v1/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
       const data = await res.json();
+      console.log(data);
       if (data.success === false) {
         return setErrorMessage(data.message);
       }
@@ -57,15 +58,6 @@ const SignUp = () => {
                 type='text'
                 placeholder='Username'
                 id='username'
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <Label value='Your email' />
-              <TextInput
-                type='email'
-                placeholder='name@company.com'
-                id='email'
                 onChange={handleChange}
               />
             </div>

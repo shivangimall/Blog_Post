@@ -8,6 +8,7 @@ const authController = require("../controllers/auth.controller")
 
 
 router.get("/getAll", blogController.getAll);
+router.get("/getBlogById/:id", blogController.getBlogById );
 router.post("/create", authController.protect,  restrictMiddleware.restrict('admin'), blogController.create);
 router.delete("/delete/:id",authController.protect, restrictMiddleware.restrict('admin'), blogController.delete);
 router.patch("/update/:id", authController.protect, restrictMiddleware.restrict('admin'), blogController.update);
