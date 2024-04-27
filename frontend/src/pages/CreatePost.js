@@ -4,20 +4,25 @@ import 'react-quill/dist/quill.snow.css';
 import { useState } from 'react';
 import 'react-circular-progressbar/dist/styles.css';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 const CreatePost = () => {
     const [formData, setFormData] = useState({});
     const [publishError, setPublishError] = useState(null);
+    const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.user);
   
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-        const res = await fetch('/api/post/create', {
+        const token = currentUser.token; 
+        const res = await fetch('http://localhost:3000/v1/blogs/create', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
           },
           body: JSON.stringify(formData),
         });
@@ -29,7 +34,7 @@ const CreatePost = () => {
   
         if (res.ok) {
           setPublishError(null);
-          navigate(`/post/${data.id}`);
+          navigate(`/post/${data.data.id}`);
         }
       } catch (error) {
         setPublishError('Something went wrong');
@@ -54,7 +59,7 @@ const CreatePost = () => {
             type='text'
             placeholder='Image URL'
             required
-            onChange={(e) => handleChange('imageUrl', e.target.value)}
+            onChange={(e) => handleChange('image', e.target.value)}
           />
           <ReactQuill
             theme='snow'
