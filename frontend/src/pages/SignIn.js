@@ -23,24 +23,31 @@ const SignIn = () => {
     }
     try {
       dispatch(signInStart());
-      const res = await fetch('/v1/auth/login', {
+      const res = await fetch("http://localhost:3000/v1/auth/login", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      if (data.success === false) {
+  
+      if (data.status === 'success') {
+        // Store token in localStorage
+        localStorage.setItem('token', data.token);
+      }
+  
+      if (data.status === 'failure') {
         dispatch(signInFailure(data.message));
       }
-
-      if (res.ok) {
-        dispatch(signInSuccess(data));
+  
+      if (res.ok && data.status === 'success') {
+        dispatch(signInSuccess(data.data));
         navigate('/');
       }
     } catch (error) {
       dispatch(signInFailure(error.message));
     }
   };
+  
   return (
     <div className='min-h-screen mt-20'>
       <div className='flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5'>

@@ -20,7 +20,7 @@ const SignUp = () => {
     try {
       setLoading(true);
       setErrorMessage(null);
-      const res = await fetch('/v1/auth/register', {
+      const res = await fetch('http://localhost:3000/v1/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

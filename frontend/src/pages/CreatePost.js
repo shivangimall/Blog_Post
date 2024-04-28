@@ -9,15 +9,13 @@ import { useSelector, useDispatch } from 'react-redux';
 const CreatePost = () => {
     const [formData, setFormData] = useState({});
     const [publishError, setPublishError] = useState(null);
-    const dispatch = useDispatch();
-  const { currentUser } = useSelector((state) => state.user);
   
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-        const token = currentUser.token; 
+        const token = localStorage.getItem('token');
         const res = await fetch('http://localhost:3000/v1/blogs/create', {
           method: 'POST',
           headers: {

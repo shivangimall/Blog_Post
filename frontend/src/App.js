@@ -8,6 +8,7 @@ import OnlyAdminPrivateRoute from './components/OnlyAdminPrivateRoute';
 import DashBoard from "./pages/Dashboard";
 import PostPage from './pages/PostPage';
 import CreatePost from './pages/CreatePost';
+import UpdatePost from './pages/UpdatePost';
 
 function App() {
   return (
@@ -21,8 +22,9 @@ function App() {
         <Route element={<OnlyAdminPrivateRoute />}>
           <Route path='/dashboard' element={<DashBoard />} />
           <Route path='/create-post' element={<CreatePost />} />
+          <Route path='/update-post/:postId' element={<UpdatePost />} />
         </Route>
-        <Route path='/post/:id' element={<PostPage />} />
+        <Route path='/post/:postId' element={<PostPage />} />
       </Routes>
 
     

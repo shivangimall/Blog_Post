@@ -1,33 +1,31 @@
 import { Avatar, Button, Dropdown, Navbar, TextInput } from 'flowbite-react';
-import { Link, useLocation, } from 'react-router-dom';
+import { Link, useLocation, useNavigate} from 'react-router-dom';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useSelector, useDispatch } from 'react-redux';
 import { signoutSuccess } from '../redux/user/userSlice';
-
+import { navigate } from 'react-router-dom';
 
 export default function Header() {
   const path = useLocation().pathname;
+  const navigate = useNavigate(); // Change here
 
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
   
 
-  const handleSignout = async () => {
+  const handleSignout = () => {
     try {
-      const res = await fetch('/api/user/signout', {
-        method: 'POST',
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        console.log(data.message);
-      } else {
-        dispatch(signoutSuccess());
-      }
+      // Clear token from localStorage
+      localStorage.removeItem('token');
+      // Dispatch action to clear user data
+      dispatch(signoutSuccess());
+      // Redirect to /login
+      navigate('/sign-in');
     } catch (error) {
       console.log(error.message);
     }
   };
-
+  
  
   return (
     <Navbar className='border-b-2'>
@@ -36,9 +34,9 @@ export default function Header() {
         className='self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white'
       >
         <span className='px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white'>
-          Sahand's
+          Blog
         </span>
-        Blog
+        Post
       </Link>
       <form>
         <TextInput
@@ -63,13 +61,13 @@ export default function Header() {
             }
           >
             <Dropdown.Header>
-              <span className='block text-sm'>@{currentUser.data.username}</span>
+              <span className='block text-sm'>@{currentUser.username}</span>
               <span className='block text-sm font-medium truncate'>
                 {currentUser.email}
               </span>
             </Dropdown.Header>
             {
-              currentUser && currentUser.data.role==="admin" && <div><Link to={'/dashboard?tab=profile'}>
+              currentUser && currentUser.role==="admin" && <div><Link to={'/dashboard?tab=profile'}>
               <Dropdown.Item>Profile</Dropdown.Item>
             </Link>
               <Dropdown.Divider />
