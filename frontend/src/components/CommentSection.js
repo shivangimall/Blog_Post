@@ -17,7 +17,7 @@ const CommentSection = ({postId}) => {
         return;
       }
       try {
-        const token = currentUser.token; 
+        const token = localStorage.getItem('token'); 
         const res = await fetch(`http://localhost:3000/v1/comments/create/${postId}`, {
           method: 'POST',
           headers: {
@@ -43,12 +43,8 @@ const CommentSection = ({postId}) => {
     useEffect(() => {
       const getComments = async () => {
         try {
-            const token = currentUser.token; 
-            const res = await fetch(`http://localhost:3000/v1/comments/getAll/${postId}`, {
-                headers: {
-                  'Authorization': `Bearer ${token}`
-                }
-              });
+         
+            const res = await fetch(`http://localhost:3000/v1/comments/getAll/${postId}`);
           if (res.ok) {
             const data = await res.json();
             console.log(data);

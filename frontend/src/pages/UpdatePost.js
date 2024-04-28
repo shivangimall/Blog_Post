@@ -14,7 +14,25 @@ const UpdatePost = () => {
   const { postId } = useParams();
 
   const navigate = useNavigate();
- 
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+      
+        const res = await fetch(`http://localhost:3000/v1/blogs/getById/${postId}`,);
+        const data = await res.json();
+        if (!res.ok) {
+          return;
+        }
+        if (res.ok) {
+          console.log(data);
+          setFormData(data.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchPost();
+  }, []);
 
 
   const handleSubmit = async (e) => {
@@ -55,12 +73,14 @@ const UpdatePost = () => {
           type='text'
           placeholder='Title'
           required
+          value={formData.title}
           onChange={(e) => handleChange('title', e.target.value)}
         />
         <TextInput
           type='text'
           placeholder='Image URL'
           required
+          value={formData.image}
           onChange={(e) => handleChange('image', e.target.value)}
         />
         <ReactQuill
@@ -68,6 +88,7 @@ const UpdatePost = () => {
           placeholder='Write something...'
           className='h-72 mb-12'
           required
+          value={formData.content}
           onChange={(value) => handleChange('content', value)}
         />
         <Button type='submit' gradientDuoTone='purpleToPink'>
